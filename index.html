@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Railway System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+
+        .header {
+            background-color: #f0f0f0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            color: #333;
+        }
+
+        h3 {
+            margin-top: 20px;
+            margin-left: 20px;
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 0px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-size: small;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: transparent;
+            color: #007bff;
+            border: 1px solid #007bff;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background-color 0.5s ease;
+        }
+
+        button:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .list-container {
+            max-width: 600px;
+            margin: 10px auto;
+        }
+
+        .list-container ul {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+
+        .list-container h3 {
+            margin: 0 0 10px 0;
+        }
+
+        #addPassengerForm {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #addPassengerForm label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        #addPassengerForm input[type="text"],
+        #addPassengerForm input[type="number"],
+        #addPassengerForm select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        #addPassengerForm button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.5s ease;
+        }
+
+        #addPassengerForm button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1> Indian Railways</h1>
+    </div>
+
+    <h3>ALL PASSENGERS REGISTERED</h3>
+    <ul id="passenger-list"></ul>
+    <button id="b1">Get Passenger Details</button>
+
+    <h3>ALL TRAINS</h3>
+    <ul id="train"></ul>
+    <button id="b2">Get Train List</button>
+
+    <h3>GET PASSENGERS LIST BY GENDER</h3>
+    <ul id="genderpassenger"></ul>
+    <button id="b3">Get MALE Passenger List</button>
+    <button id="b4">Get FEMALE Passenger List</button>
+    <h3>ADD NEW PASSENGER</h3>
+    <form id="addPassengerForm">
+
+        <label for="passengerID">Passenger ID:</label>
+        <input type="text" id="passengerID" name="passenger_ID" required><br>
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="first_name" required><br>
+        <label for="middleName">Middle Name:</label>
+        <input type="text" id="middleName" name="middle_name" required><br>
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="last_name" required><br>
+        <label for="pincode">Pincode:</label>
+        <input type="number" id="pincode" name="pincode" required><br>
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" required><br>
+        <label for="state">State:</label>
+        <input type="text" id="state" name="state" required><br>
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" required><br>
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select><br>
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br>
+        <button type="submit">Add Passenger</button>
+    </form>
+
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const b1 = document.getElementById("b1");
+            const b2 = document.getElementById("b2");
+            const b3 = document.getElementById("b3");
+            const b4 = document.getElementById("b4");
+
+            b1.addEventListener("click", function () {
+                fetch('/passengers')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const passengerList = document.getElementById('passenger-list');
+                        passengerList.innerHTML = '';
+
+                        data.forEach(passenger => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = `${passenger.first_name} ${passenger.last_name} ID:  ${passenger.passenger_ID}  Pincode: ${passenger.pincode}  City: ${passenger.city}  State: ${passenger.state}`;
+                            passengerList.appendChild(listItem);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                    });
+            });
+
+            b2.addEventListener("click", function () {
+                fetch('/train')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const trainList = document.getElementById('train');
+                        trainList.innerHTML = '';
+                        data.forEach(train => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = `Train No: ${train.train_no} \nTrain Name: ${train.train_name} \nSource: ${train.train_source} \nDestination: ${train.train_destination} Arrival Time: ${train.arrival_time} Departure Time: ${train.departure_time}\nSeats Available: ${train.seats_available}\nReference Date: ${train.reference_date}`;
+                            trainList.appendChild(listItem);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                    });
+            });
+
+            b3.addEventListener("click", function () {
+                fetch('/malegender')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const passengerList = document.getElementById('genderpassenger');
+                        passengerList.innerHTML = '';
+                        data.forEach(passenger => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = `${passenger.first_name} ${passenger.last_name} ID:  ${passenger.passenger_ID}  Pincode: ${passenger.pincode}  City: ${passenger.city}  State: ${passenger.state}`;
+                            passengerList.appendChild(listItem);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                    });
+            });
+
+            b4.addEventListener("click", function () {
+                fetch('/femalegender')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const passengerList = document.getElementById('genderpassenger');
+                        passengerList.innerHTML = '';
+                        data.forEach(passenger => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = `${passenger.first_name} ${passenger.last_name} ID:  ${passenger.passenger_ID}  Pincode: ${passenger.pincode}  City: ${passenger.city}  State: ${passenger.state}`;
+                            passengerList.appendChild(listItem);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                    });
+            });
+
+
+
+            const addPassengerForm = document.getElementById("addPassengerForm");
+
+            addPassengerForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const formData = new FormData(addPassengerForm);
+                const data = {};
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                });
+
+
+
+                fetch('/addpassenger', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(result => {
+                        console.log('New passenger added:', result);
+                        alert("Passenger Added")
+
+                    })
+                    .catch(error => {
+                        console.error('Error adding new passenger:', error);
+                    });
+            });
+        });
+
+    </script>
+</body>
+
+</html>
