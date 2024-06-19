@@ -41,7 +41,7 @@ Frontend Interface: Provides a user-friendly interface for interacting with the 
 Usage
 To run the project:
 
-#How to Run ?
+**How to Run ?**
 Initialize the MySQL database with the provided schema and initial data.
 Configure and start the Node.js server (server.js).
 Access the web interface (index.html) to interact with the system.
