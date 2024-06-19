@@ -45,4 +45,4 @@ To run the project:
 Initialize the MySQL database with the provided schema and initial data using workbench/MySQL-Command_Line.
 Configure and start the Node.js server (server.js).
 Access the web interface by going to (http://localhost:3000) in any browser.
-This railway management system project aims to streamline operations, enhance passenger management, and provide efficient booking and tracking functionalities.
+This railway management system project aims to make prototype of railway admin portal which uses my sql.
